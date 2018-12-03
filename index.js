@@ -28,18 +28,17 @@ mf.comp.ScreenIF = class extends mf.Component {
      */
     fullScreen () {
         try {
-            let full_fnc = document.body.requestFullscreen       || // W3C
-                           document.body.requestFullScreen       || // W3C
-                           document.body.webkitRequestFullscreen || // Chrome等
-                           document.body.webkitRequestFullScreen || // Chrome等
-                           document.body.mozRequestFullscreen    || // FireFox
-                           document.body.mozRequestFullScreen    || // FireFox
-                           document.body.msRequestFullscreen     || // IE11
-                           null;
-            if (null === full_fnc) {
+            if (document.body.webkitRequestFullScreen) {
+                document.body.webkitRequestFullScreen();      // chrome
+            } else if (document.body.mozRequestFullScreen) {
+                document.body.mozRequestFullScreen();         // firefox
+            } else if (document.body.requestFullscreen) {
+                document.body.requestFullscreen();            // w3c
+            } else if (document.body.msRequestFullscreen) {
+                document.body.msRequestFullscreen();          // IE11
+            } else {
                 return;
             }
-            full_func();
             document.body.style['overflow'] = 'auto';
         } catch (e) {
             console.error(e.stack);
@@ -52,22 +51,17 @@ mf.comp.ScreenIF = class extends mf.Component {
      */
     windowed () {
         try {
-            let win_fnc = document.exitFullscreen         || // W3C
-		          document.exitFullScreen         || // W3C
-		          document.webkitExitFullscreen   || // Chrome
-                          document.webkitExitFullScreen   || // Chrome
-                          document.webkitCancelFullscreen || // Chrome
-                          document.webkitCancelFullScreen || // Chrome
-                          document.mozCancelFullscreen    || // FireFox
-                          document.mozCancelFullScreen    || // FireFox
-                          document.mozExitFullscreen      || // FireFox
-                          document.mozExitFullScreen      || // FireFox
-                          document.msExitFullscreen       || // IE11
-                          null;
-            if (null === win_fnc) {
+            if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();      // chrome
+            } else if (document.mozCancelFullscreen) {
+                document.body.mozCancelFullscreen();  // firefox
+            } else if (document.exitFullscreen) {
+                document.exitFullscreen();            // w3c
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();          // IE11
+            } else {
                 return;
             }
-            win_fnc();
             /* reset scroll css config */
             document.body.style['overflow'] = null;
         } catch (e) {
